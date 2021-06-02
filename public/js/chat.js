@@ -13,11 +13,11 @@ const messageLocationTemplate = document.querySelector('#messages-location').inn
 const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 //Options
-const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
+const { username, room, activeRooms } = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
 //autoScroll Function
 const autoscroll = () => {
-	// get the lst message
+	// get the last message
 	const newMessage = $messages.lastElementChild;
 
 	// get the height of that message

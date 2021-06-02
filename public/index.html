@@ -9,18 +9,41 @@
 </head>
 <body>
     <div class="centered-form">
-        <div class="centered-form__box">
+        <div class="centered-form__box"  >
             <h1>Join</h1>
             <form action="/chat.html">
+
                 <label for="username">Display Name</label>
                 <input type="text" name="username" placeholder="Display name" id="username" required>
 
                 <label for="room">Room</label>
                 <input type="text" name="room" placeholder="Room" id="room" required>
 
+                <label for="selectActiveRooms">Active Rooms</label>
+                <select id="selectActiveRooms" name="activeRooms" style="width: 200px;" onchange="myFunction(event)">
+                    <option value=""></option>
+                </select>
+
                 <button>Join</button>
+
             </form>
         </div>
     </div>
+
+    
+    <script id="activeRoomsTemplate" type="text/html">
+        <option disabled selected>Choose a room</option>
+        {{#rooms}}<option value="{{.}}">{{.}}</option>{{/rooms}}  
+    </script>
+
+    <script>
+        function myFunction(e) {
+            document.getElementById("room").value = e.target.value
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>
 </body>
 </html>

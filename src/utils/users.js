@@ -1,6 +1,7 @@
 const users = [];
+let rooms = {};
 
-//addUser, removeUser, getUser, getUsersInRoom
+//addUser, removeUser, getUser, getUsersInRoom, getAvticeRooms
 const addUser = ({ id, username, room }) => {
 	if (!username || !room) {
 		return {
@@ -47,9 +48,31 @@ const getUsersInRoom = (room) => {
 	return users.filter((user) => user.room === room);
 };
 
+const getActiveRooms = () => {
+	// rooms is an object map, to avoid rooms dublication
+	users.map((user) => {
+		if (!rooms[user.room]) {
+			rooms[user.room] = user.room;
+		}
+	});
+
+	//all rooms even inactive ones
+	const allRooms = Object.keys(rooms);
+
+	//only rooms that has users in it
+	const activeRooms = allRooms.filter((room) => {
+		if (getUsersInRoom(room).length > 0) {
+			return room;
+		}
+	});
+
+	return activeRooms;
+};
+
 module.exports = {
 	addUser,
 	removeUser,
 	getUser,
-	getUsersInRoom
+	getUsersInRoom,
+	getActiveRooms
 };

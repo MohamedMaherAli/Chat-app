@@ -8,7 +8,7 @@ const socketio = require('socket.io');
 const server = http.createServer(app);
 const io = socketio(server);
 const { generateMessage, generateLocationMessage } = require('./utils/messages');
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users');
+const { addUser, removeUser, getUser, getUsersInRoom, getActiveRooms } = require('./utils/users');
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -24,11 +24,17 @@ io.on('connection', (socket) => {
 		socket.join(user.room);
 		socket.emit('message', generateMessage('Welcome!'));
 		socket.broadcast.to(user.room).emit('message', generateMessage(`${user.username} has joined!`));
+
 		io.to(user.room).emit('roomData', {
 			room: user.room,
 			users: getUsersInRoom(user.room)
 		});
 		cb();
+	});
+
+	//active rooms
+	io.emit('activeRooms', {
+		rooms: getActiveRooms()
 	});
 
 	//User sending message logic
